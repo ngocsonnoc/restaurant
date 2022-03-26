@@ -1,0 +1,36 @@
+.btn-cart-count {
+  width: 65px;
+  height: 65px;
+  background: #ffa323;
+  color: #fff;
+  border-radius: 15px;
+  transform: rotate(45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 7.5rem;
+  cursor: pointer;
+  right: 1.5rem;
+  font-size: 1.7rem;
+  z-index: 10;
+}
+
+.btn-cart-count .count {
+  position: absolute;
+  background: red;
+  top: -8px;
+  left: -9px;
+  transform: rotate(-45deg);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+}
+.btn-cart-count i {
+  transform: rotate(-45deg);
+}
