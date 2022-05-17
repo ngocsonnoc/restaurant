@@ -2,8 +2,11 @@ import BaseServices from "./BaseServices";
 
 const AccountServices = {
   // Register
-  Register: async (model) => {
-    return await BaseServices.Post("/api/HomeAccount/register/", model);
+  SignUp: async (model, redirect) => {
+    return await BaseServices.Post(
+      "/api/HomeAccount/signup/" + redirect,
+      model
+    );
   },
 
   // Forgot password
@@ -62,8 +65,11 @@ const AccountServices = {
       model
     );
   },
-  GetUserById: async () => {
-    return await BaseServices.Get(`/api/HomeAccount/get-user-by-id`);
+  GetUser: async () => {
+    return await BaseServices.Get(`/api/HomeAccount/get-user`);
+  },
+  UpdateUser: async (user) => {
+    return await BaseServices.Post(`/api/HomeAccount/update-user`, user);
   },
 };
 

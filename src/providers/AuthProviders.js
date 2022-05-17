@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from "react";
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../constants/actionTypes";
 import { AuthContext } from "../contexts/AuthContext";
 import { authReducer } from "../redux/auth/authReducers";
 
@@ -9,8 +9,9 @@ const AuthProvider = (props) => {
     return authLocal
       ? JSON.parse(authLocal)
       : {
-          facebookUserId: null,
-          googleUserId: null,
+          firstName: null,
+          lastName: null,
+          avatar: null,
           email: null,
         };
   });
@@ -19,11 +20,12 @@ const AuthProvider = (props) => {
     localStorage.setItem("auth", JSON.stringify(auth));
   }, [auth]);
 
-  const loginHandler = ({ facebookUserId, googleUserId, email }) => {
+  const loginHandler = ({ firstName, lastName, avatar, email }) => {
     dispatch({
       type: actionTypes.AUTH_LOGIN,
-      facebookUserId: facebookUserId,
-      googleUserId: googleUserId,
+      firstName: firstName,
+      lastName: lastName,
+      avatar: avatar,
       email: email,
     });
   };
@@ -33,9 +35,10 @@ const AuthProvider = (props) => {
   }, []);
 
   const authValues = {
-    isLogin: !!auth.token,
-    facebookUserId: auth.facebookUserId,
-    googleUserId: auth.googleUserId,
+    isLogin: auth.isLogin,
+    firstName: auth.firstName,
+    lastName: auth.lastName,
+    avatar: auth.avatar,
     email: auth.email,
     login: loginHandler,
     logout: logoutHandler,

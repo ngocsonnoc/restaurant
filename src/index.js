@@ -9,6 +9,7 @@ import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
 import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
 import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../node_modules/@syncfusion/ej2-react-calendars/styles/material.css";
+import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";

@@ -33,6 +33,9 @@ const StyledInput = styled.input`
   color: #3c354e;
   font-size: 1rem;
   font-weight: bold;
+  &.custom-input {
+    width: 95%;
+  }
   &:focus {
     display: inline-block;
     box-shadow: 0 0 0 0.2rem #b9abe0;

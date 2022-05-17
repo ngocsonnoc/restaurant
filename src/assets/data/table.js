@@ -13,7 +13,6 @@ export const table =  [
     maxSeats: 4,
     listBooking: [1, 3, 5, 6],
     price: 0,
-    voucher: null,
     rating: 3.4,
     floor: "N1",
   },

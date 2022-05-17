@@ -13,6 +13,7 @@ import {
 } from "../../../../redux/cart/cartSelector";
 
 import ButtonAddRemoveItem from "../../ButtonAddRemoveItem";
+import Common from "../../../../based/Common";
 
 const MenuItem = ({
   item,
@@ -22,12 +23,12 @@ const MenuItem = ({
   cartRemoveItem,
   isOrder,
 }) => {
-  const { id, img, name, price, info, rating } = item;
+  const { _id, productAvatar, displayName, price, content, rating } = item;
 
   const handleQuantity = () => {
     let quantity = 0;
     if (cartCount !== 0) {
-      const foundItemInCart = cartList.find((item) => item.id === id);
+      const foundItemInCart = cartList.find((item) => item._id === _id);
       if (foundItemInCart) {
         quantity = foundItemInCart.quantity;
       }
@@ -37,15 +38,15 @@ const MenuItem = ({
 
   return (
     <Wrapper>
-      <img src={img} alt="food" />
+      <img src={productAvatar} alt="food" />
       <div className="item-head_desc">
-        <p className="head_desc-name">{name}</p>
+        <p className="head_desc-name">{displayName}</p>
         <p className="head_desc-info">
-          <small>{info}</small>
+          <small>{content}</small>
         </p>
       </div>
       <div className="item-foot_desc">
-        <span className="foot_desc-price">${price}</span>
+        <span className="foot_desc-price">{Common.formatCurrency(price)}</span>
         {isOrder ? (
           <ButtonAddRemoveItem
             quantity={handleQuantity()}

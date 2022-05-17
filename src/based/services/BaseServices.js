@@ -4,7 +4,7 @@ const BaseServices = {
   Get: async (url) => {
     try {
       const res = await RequestEcom.Get(url);
-      if (res.success) return [null, res.data];
+      if (res.success) return [null, res];
       return [res, null];
     } catch (err) {
       return [err, null];

@@ -1,12 +1,14 @@
 import React from "react";
 import TopNav from "../components/TopNav/TopNav";
 import styled from "styled-components";
+import Footer from "../components/footer/Footer";
 const Layout = (props) => {
   return (
     <LayoutWrapper>
       <TopNav />
 
       {props.children}
+      <Footer />
     </LayoutWrapper>
   );
 };

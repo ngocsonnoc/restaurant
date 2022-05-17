@@ -1,4 +1,5 @@
 import cookie from "react-cookies";
+import { PartTime } from "./Constants";
 
 var Common = {
   formatDate(date, type) {
@@ -55,22 +56,43 @@ var Common = {
     let token = cookie.load("token");
     return token;
   },
+  RemoveToken: () => {
+    cookie.remove("token", { path: "/" });
+    sessionStorage.removeItem("tfuToken");
+},
   isDesktop() {
     return window.innerWidth > 960;
-  },   GroupArray(array, key) {
+  },
+  GroupArray(array, key) {
     const map = new Map();
     array.forEach((item) => {
-        let keyValue = item[key];
-        const collection = map.get(keyValue);
-        if (!collection) {
-            map.set(keyValue, [item]);
-        } else {
-            collection.push(item);
-        }
+      let keyValue = item[key];
+      const collection = map.get(keyValue);
+      if (!collection) {
+        map.set(keyValue, [item]);
+      } else {
+        collection.push(item);
+      }
     });
     return map;
-},
+  },
+  GetPartTime() {
+    var date = new Date();
+    var h = date.getHours();
+    switch (h) {
+      case h > 1 || h < 11:
+        return PartTime.BREAKFAST;
+      case h >=11  || h < 16:
+        return PartTime.LUNCH;
+      case h >= 16 || h < 19:
+        return PartTime.LUNCH;
+      case h >= 19 && h < 24:
+        return PartTime.DESERT;
 
+      default:
+        return PartTime.BREAKFAST;
+    }
+  },
 };
 
 export default Common;

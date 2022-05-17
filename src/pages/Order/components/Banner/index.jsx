@@ -4,6 +4,7 @@ import Logo from "../../../../components/common/Logo";
 import { useHistory } from "react-router-dom";
 import Common from "../../../../based/Common";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
 export const ScrollMenuOptions = {
   BOOK_TABLE: 2,
@@ -11,7 +12,13 @@ export const ScrollMenuOptions = {
   LOGIN: 1,
 };
 
-const Banner = ({ handleScrollMenu, token, setCurrentStep, currentStep }) => {
+const Banner = ({
+  handleScrollMenu,
+  token,
+  setCurrentStep,
+  currentStep,
+  tableSelected,
+}) => {
   const history = useHistory();
 
   useEffect(() => {
@@ -41,16 +48,19 @@ const Banner = ({ handleScrollMenu, token, setCurrentStep, currentStep }) => {
               Đăng nhập <i className="fas fa-long-arrow-alt-right"></i>
             </button>
           )}
-
-          <button
-            className={token ? "" : "disabled"}
-            onClick={() => {
-              handleScrollMenu(ScrollMenuOptions.BOOK_TABLE);
-              setCurrentStep(ScrollMenuOptions.BOOK_TABLE);
-            }}
-          >
-            Chọn bàn trống <i className="fas fa-long-arrow-alt-right"></i>
-          </button>
+          {!tableSelected || tableSelected.tableId === "" ? (
+            <button
+              className={token ? "" : "disabled"}
+              onClick={() => {
+                handleScrollMenu(ScrollMenuOptions.BOOK_TABLE);
+                setCurrentStep(ScrollMenuOptions.BOOK_TABLE);
+              }}
+            >
+              Chọn bàn trống <i className="fas fa-long-arrow-alt-right"></i>
+            </button>
+          ) : (
+            ""
+          )}
 
           <button
             className={token ? "" : "disabled"}
@@ -64,6 +74,15 @@ const Banner = ({ handleScrollMenu, token, setCurrentStep, currentStep }) => {
     </Wrapper>
   );
 };
+const mapStateToProps = (state, ownProps) => {
+  return {
+    tableSelected: state.table,
+  };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);
 
 const Wrapper = styled.header`
   display: grid;
@@ -128,4 +147,3 @@ const Wrapper = styled.header`
     }
   }
 `;
-export default Banner;

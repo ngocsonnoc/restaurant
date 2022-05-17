@@ -1,28 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import defaultImg from "../../../assets/image/home/img2.jpg";
+import Common from "../../../based/Common";
+import { PartTime } from "../../../based/Constants";
+
 const DeliciousMenu = () => {
+  const [currentTab, setCurrentTab] = useState(Common.GetPartTime());
   return (
     <Wrapper>
       <h1 className="heading">
         {" "}
-        our delicious <span>menu</span>{" "}
+        Các món ăn<span> nổi bật</span>{" "}
       </h1>
       <ul className="list" data-aos="fade-down">
         <li className="btn" data-src="../../../assets/image/home/menu1.jpg">
-          breakfast
+          Món mặn
         </li>
         <li
           className="btn active"
           data-src="../../../assets/image/home/menu2.jpg"
         >
-          lunch
+          Món ngọt
         </li>
         <li className="btn" data-src="../../../assets/image/home/menu3.jpg">
-          dinner
+          Đặc biệt
         </li>
         <li className="btn" data-src="../../../assets/image/home/menu4.jpg">
-          dessert
+          Đồ uống
         </li>
       </ul>
       <div className="row" data-aos="fade-right">
@@ -84,7 +88,7 @@ const Wrapper = styled.section`
     flex-wrap: wrap;
     list-style: none;
     padding: 1rem 0;
-    margin: .4rem 0;
+    margin: 0.4rem 0;
     border-top: 0.3rem dashed rgba(0, 0, 0, 0.2);
     border-bottom: 0.3rem dashed rgba(0, 0, 0, 0.2);
   }

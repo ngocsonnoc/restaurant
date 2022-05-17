@@ -3,16 +3,14 @@ import Common from "./Common";
 
 const homeUrl =
   process.env.NODE_ENV === "production"
-    ? "https://beta.ranus.vn"
+    ? "https://"
     : process.env.REACT_APP_BASE_URL;
 const apiUrl =
   process.env.NODE_ENV === "production"
-    ? "https://beta-home-api.ranus.vn"
+    ? "https://"
     : process.env.REACT_APP_BE_URL;
 const cdnUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://beta-cdn.ranus.vn"
-    : "https://localhost:6001";
+  process.env.NODE_ENV === "production" ? "https://" : "https://localhost:6001";
 
 var token = Common.GetToken();
 
@@ -74,16 +72,19 @@ var RequestEcom = {
         .then((res) => {
           resolve(res.data);
         })
+
         .catch((error) => {
           if (error.response && error.response.status === 401) {
             Common.RemoveToken();
-            window.location.href = "/login?redirect=" + window.location.href;
           } else if (error.response && error.response.status === 302) {
             window.location.href = "/confirm-email";
           } else if (error.response && error.response.status === 403) {
             window.location.href = "/access-denied";
           } else if (error.response) {
+            console.log(error);
             reject(error.response.data);
+          } else {
+            reject("Lỗi kết nối");
           }
         });
     });

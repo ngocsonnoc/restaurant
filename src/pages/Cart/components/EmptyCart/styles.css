@@ -6,10 +6,9 @@
   align-items: center;
 }
 .emptyCart img {
-  width: 100%;
   height: 100%;
   object-fit: contain;
-  max-width: 150px;
+  width: 326px;
 }
 
 .emptyCart button {

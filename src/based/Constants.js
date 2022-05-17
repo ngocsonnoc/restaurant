@@ -95,5 +95,110 @@ var NOTIFY = {
   WARNING: 3,
   INFO: 4,
 };
+var INIT_PAGING = {
+  pageSize: 10,
+  pageNumber: 1,
+  orderBy: "",
+  orderDirection: "",
+  totalRecords: 0,
+};
+var PartTime = {
+  BREAKFAST: 1,
+  LUNCH: 2,
+  DINNER: 3,
+  DESERT: 4,
+};
+var SocialBackground = {
+  FACEBOOK: "linear-gradient(to right, #0546A0 0%, #0546A0 40%, #663FB6 100%)",
+  GOOGLE: "#d54936",
+  INSTAGRAM: "linear-gradient(to right, #A12AC4 0%, #ED586C 40%, #F0A853 100%)",
+};
 
-export { CONSTANTS, NOTIFY };
+const ActiveTimes = [
+  {
+    label: "8h-8h45",
+    value: 1,
+    minLabel: "8h",
+    maxLabel: "8h45",
+  },
+  {
+    label: "9h-9h45",
+    value: 2,
+    minLabel: "9h",
+    maxLabel: "9h45",
+  },
+  {
+    label: "10h-10h45",
+    value: 3,
+    minLabel: "10h",
+    maxLabel: "10h45",
+  },
+  {
+    label: "11h-11h45",
+    value: 4,
+    minLabel: "11h",
+    maxLabel: "11h45",
+  },
+  {
+    label: "12h-12h45",
+    value: 5,
+    minLabel: "12h",
+    maxLabel: "12h45",
+  },
+  {
+    label: "13h-13h45",
+    value: 6,
+    minLabel: "13h",
+    maxLabel: "13h45",
+  },
+  {
+    label: "14h-14h45",
+    value: 7,
+    minLabel: "14h",
+    maxLabel: "14h45",
+  },
+  {
+    label: "15h-15h45",
+    value: 8,
+    minLabel: "15h",
+    maxLabel: "15h45",
+  },
+  {
+    label: "16h-16h45",
+    value: 9,
+    minLabel: "16h",
+    maxLabel: "16h45",
+  },
+  {
+    label: "17h-17h45",
+    value: 10,
+    minLabel: "17h",
+    maxLabel: "17h45",
+  },
+  {
+    label: "18h-18h45",
+    value: 11,
+    minLabel: "18h",
+    maxLabel: "18h45",
+  },
+  {
+    label: "19h-19h45",
+    value: 12,
+    minLabel: "19h",
+    maxLabel: "19h45",
+  },
+  {
+    label: "20h-20h45",
+    value: 13,
+    minLabel: "20h",
+    maxLabel: "20h45",
+  },
+];
+export {
+  CONSTANTS,
+  NOTIFY,
+  PartTime,
+  SocialBackground,
+  INIT_PAGING,
+  ActiveTimes,
+};

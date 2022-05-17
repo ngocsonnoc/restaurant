@@ -1,360 +1,263 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 import styled from "styled-components";
+import { selectCartItemsCount } from "../../redux/cart/cartSelector";
+import { AuthContext } from "../../contexts/AuthContext";
 import Common from "../../based/Common";
-
-const TopNav = (props) => {
+import AccountServices from "../../based/services/AccountServices";
+import UserModel from "../../models/UserModel";
+const TopNav = ({ cartCount }) => {
+  const authContext = useContext(AuthContext);
   const [isActiveMobileNav, setIsActiveMobileNav] = useState(false);
-  const [isScroll, setIsScroll] = useState(false);
+  const [userDetail, setUserDetail] = useState(new UserModel());
   const location = useLocation();
-  const [isOrderPage, setIsOrderPage] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(Common.isDesktop());
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (window.innerWidth > 960) setIsActiveMobileNav(false);
   }, []);
+
   useEffect(() => {
-    if (
-      location.pathname.includes("/order") ||
-      location.pathname.includes("/cart")
-    )
-      setIsOrderPage(true);
-    else setIsOrderPage(false);
-    setIsActiveMobileNav(false);
+    getUser();
   }, [location.pathname]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setIsDesktop(Common.isDesktop());
-    });
-    return () => window.removeEventListener("resize", (e) => {});
-  }, []);
-  const handleScroll = () => {
-    if (window.scrollY > 90 && Common.isDesktop()) setIsScroll(true);
-    else setIsScroll(false);
+  const getUser = async () => {
+    setIsLoading(true);
+    let [err, data] = await AccountServices.GetUser();
+    if (!err && data) {
+      setIsLoading(false);
+      setUserDetail(data.result);
+    } else {
+      setIsLoading(false);
+      setUserDetail(new UserModel());
+    }
   };
+  const token = Common.GetToken();
+  console.log("token", token);
   return (
     <Wrapper>
-      <div className="py-1 bg-black top">
-        <div className="container">
-          <div className="row no-gutters d-flex align-items-start align-items-center px-md-0">
-            <div className="col-lg-12 d-block">
-              <div className="row d-flex">
-                <div className="col-md pr-4 d-flex topper align-items-center">
-                  <div className="icon mr-2 d-flex justify-content-center align-items-center">
-                    <span className="icon-phone2" />
-                  </div>
-                  <span className="text">+ 1235 2355 98</span>
-                </div>
-                <div className="col-md pr-4 d-flex topper align-items-center">
-                  <div className="icon mr-2 d-flex justify-content-center align-items-center">
-                    <span className="icon-paper-plane" />
-                  </div>
-                  <span className="text">youremail@email.com</span>
-                </div>
-                <div className="col-md-5 pr-4 d-flex topper align-items-center text-lg-right justify-content-end">
-                  <p className="mb-0 register-link">
-                    <span>Open hours:</span> <span>Monday - Sunday</span>{" "}
-                    <span>8:00AM - 9:00PM</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <nav
-        className={`navbar navbar-expand-lg  ftco_navbar bg-dark ${
-          isScroll ? "navbar-dark" : ""
-        } ftco-navbar-light  ${isScroll ? "navbar-sticky" : ""}`}
-        id="ftco-navbar"
+      <Link
+        to={{ pathname: "/", state: { prevPath: location.pathname } }}
+        className="logo"
       >
-        <div className="container">
-          <a
-            className="navbar-brand"
-            href="/"
-            style={{
-              color: isDesktop
-                ? !isScroll && !isOrderPage
-                  ? "#fff"
-                  : !isScroll && isOrderPage
-                  ? "#000"
-                  : "#fff"
-                : "#fff",
+        {" "}
+        <i className="fas fa-shopping-basket" /> Appetizer{" "}
+      </Link>
+      <nav className={isActiveMobileNav ? "navbar active" : "navbar"}>
+        <Link to={{ pathname: "/", state: { prevPath: location.pathname } }}>
+          Trang chủ
+        </Link>
+        <Link
+          to={{ pathname: "/blog", state: { prevPath: location.pathname } }}
+        >
+          Bài viết
+        </Link>
+      </nav>
+      <div className="icons">
+        <div
+          className="fas fa-bars"
+          id="menu-btn"
+          onClick={() => setIsActiveMobileNav(!isActiveMobileNav)}
+        ></div>
+        <Link
+          to={{ pathname: "/order", state: { prevPath: location.pathname } }}
+        >
+          <div className="fas fa-store-alt"></div>
+        </Link>
+        <Link
+          to={{ pathname: "/cart", state: { prevPath: location.pathname } }}
+          className="cart-button"
+        >
+          <span className="badge">{cartCount >= 100 ? "99+" : cartCount}</span>
+          <div className="fas fa-shopping-cart"></div>
+        </Link>
+        {authContext.isLogin && !!token && token !== "undefined" ? (
+          <Link
+            to={{
+              pathname: "/profile",
+              state: { prevPath: location.pathname },
             }}
           >
-            Appetizer
-          </a>
-          <button
-            className="navbar-toggler collapsed "
-            type="button"
-            onClick={() => setIsActiveMobileNav(!isActiveMobileNav)}
+            <div className="topnav-avatar">
+              {userDetail.avatar !== "" ? (
+                <img src={userDetail.avatar} alt={userDetail.lastName} />
+              ) : (
+                <p className="topnav-avatar-character">
+                  {authContext.lastName.charAt[0]}
+                </p>
+              )}
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to={{ pathname: "/login", state: { prevPath: location.pathname } }}
           >
-            <i className="fas fa-bars"></i> Menu
-          </button>
-          <div
-            className={`navbar-collapse collapse justify-content-end ${
-              isActiveMobileNav ? "show" : ""
-            }`}
-            id="ftco-nav"
-            style={{}}
-          >
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <NavLink
-                  color={
-                    isDesktop
-                      ? !isScroll && !isOrderPage
-                        ? "#fff"
-                        : !isScroll && isOrderPage
-                        ? "#000"
-                        : "#fff"
-                      : "#fff"
-                  }
-                  to="/"
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  color={
-                    isDesktop
-                      ? !isScroll && !isOrderPage
-                        ? "#fff"
-                        : !isScroll && isOrderPage
-                        ? "#000"
-                        : "#fff"
-                      : "#fff"
-                  }
-                  to="/about"
-                >
-                  About
-                </NavLink>
-              </li>
-              <li className="nav-item active">
-                <NavLink
-                  color={
-                    isDesktop
-                      ? !isScroll && !isOrderPage
-                        ? "#fff"
-                        : !isScroll && isOrderPage
-                        ? "#000"
-                        : "#fff"
-                      : "#fff"
-                  }
-                  to="/menu"
-                >
-                  Menu
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  color={
-                    isDesktop
-                      ? !isScroll && !isOrderPage
-                        ? "#fff"
-                        : !isScroll && isOrderPage
-                        ? "#000"
-                        : "#fff"
-                      : "#fff"
-                  }
-                  to="/blog"
-                >
-                  Blog
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  color={
-                    isDesktop
-                      ? !isScroll && !isOrderPage
-                        ? "#fff"
-                        : !isScroll && isOrderPage
-                        ? "#000"
-                        : "#fff"
-                      : "#fff"
-                  }
-                  to="/contact"
-                >
-                  Contact
-                </NavLink>
-              </li>
-              <li className="nav-item cta">
-                <SpecialNavLink to="/order"> Book a table</SpecialNavLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+            <div className="fas fa-user" id="login-btn" />
+          </Link>
+        )}
+      </div>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
-  width: 100%;
-  .top {
-    background: transparent !important;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    background: rgba(0, 0, 0, 0.3) !important;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
-  }
-  .ftco-navbar-light {
-    background: transparent !important;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    padding: 0;
-  }
-  .ftco-navbar-dark {
-  }
-  .ftco-navbar-light .navbar-brand {
+const mapStateToProps = createStructuredSelector({
+  cartCount: selectCartItemsCount,
+});
+
+export default connect(mapStateToProps)(TopNav);
+
+const Wrapper = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 9%;
+  background: #fff;
+  box-shadow: var(--box-shadow);
+
+  .logo {
     font-size: 2rem;
-  }
-  .ftco-navbar-light.navbar-dark .navbar-brand {
+    font-weight: bolder;
+    color: var(--black);
+    text-decoration: none;
   }
 
-  .navbar-brand {
-    font-weight: 900;
-    font-size: 20px;
+  .logo i {
+    color: var(--orange);
   }
-  .navbar-brand {
-    display: inline-block;
-    padding-top: 0.3125rem;
-    padding-bottom: 0.3125rem;
-    margin-right: 1rem;
-    font-size: 1.25rem;
-    line-height: inherit;
-    white-space: nowrap;
+
+  .navbar a {
+    font-size: 1.2rem;
+    margin: 0 1rem;
+    color: var(--black);
+    text-decoration: none;
   }
-  .ftco-navbar-light .navbar-toggler {
-    border: none;
-    color: rgba(255, 255, 255, 0.5) !important;
-    cursor: pointer;
-    padding-right: 0;
-    text-transform: uppercase;
-    font-size: 16px;
-    letter-spacing: 0.1em;
+
+  .navbar a:hover {
+    color: var(--orange);
   }
-  .navbar-dark .navbar-toggler {
-    color: rgba(255, 255, 255, 0.5);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  .oi {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    speak: none;
-    font-family: Icons;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .navbar-collapse {
-    -ms-flex-preferred-size: 100%;
-    flex-basis: 100%;
-    -webkit-box-flex: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-  .navbar-nav {
-    display: -webkit-box;
-    display: -ms-flexbox;
+
+  .icons {
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: row;
-    -ms-flex-direction: row;
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none;
-    transition: all 0.5s ease;
+    div {
+      height: 4.5rem;
+      width: 4.5rem;
+      line-height: 4.5rem;
+      border-radius: 0.5rem;
+      background: #eee;
+      color: var(--black);
+      font-size: 2rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+      text-align: center;
+    }
   }
-  .navbar.navbar-sticky {
-    top: 0;
-    background: rgba(0, 0, 0, 0.9) !important;
-    position: -webkit-sticky;
-    position: fixed;
-    left: 0;
-    height: 80px;
+  .topnav-avatar {
+    display: flex;
+    overflow: hidden;
+    img {
+      width: 100%;
+      max-height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   }
-  .navbar-dark {
-    color: #fff !important;
+  .icons div:hover {
+    background: var(--orange);
+    color: #fff;
   }
-  .navbar-light {
-    color: #000 !important;
+
+  #menu-btn {
+    display: none;
   }
-  @media (min-width: 992px) {
-    .navbar-expand-lg .navbar-toggler {
+
+  .cart-button {
+    position: relative;
+    .badge {
+      position: absolute;
+      top: -3px;
+      right: -5px;
+      color: red;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+  }
+
+  /* media queries  */
+
+  @media (max-width: 991px) {
+    .header {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #menu-btn {
+      display: inline-block;
+    }
+
+    .search-form {
+      width: 90%;
+    }
+    .icons {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .navbar {
+      position: absolute;
+      top: 110%;
+      right: -110%;
+      width: 20rem;
+      box-shadow: var(--box-shadow);
+      border-radius: 0.5rem;
+      background: #fff;
+      transition: 0.4s linear;
+    }
+    .icons div {
+      height: 3.5rem;
+      width: 3.5rem;
+      line-height: 3.5rem;
+      border-radius: 0.5rem;
+      background: #eee;
+      color: var(--black);
+      font-size: 1.5rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+      text-align: center;
+    }
+    .logo i {
       display: none;
     }
-    .navbar-expand-lg .navbar-collapse {
-      display: -webkit-box !important;
-      display: -ms-flexbox !important;
-      display: flex !important;
-      -ms-flex-preferred-size: auto;
-      flex-basis: auto;
+
+    .navbar.active {
+      right: 2rem;
+      transition: 0.4s linear;
+    }
+
+    .navbar a {
+      font-size: 1.5rem;
+      margin: 1rem 1.5rem;
+      display: block;
     }
   }
-  @media (max-width: 991.98px) {
-    .top {
-      display: none;
-    }
-    .ftco-navbar-light {
-      top: 0px;
-    }
-    .ftco-navbar-light {
-      background: #000 !important;
-      position: relative;
-      top: 0;
-      padding: 10px 15px;
-    }
-    .navbar-nav {
-      -ms-flex-direction: column;
-      flex-direction: column;
+
+  @media (max-width: 450px) {
+    .icons div {
+      height: 2.5rem;
+      width: 2.5rem;
+      line-height: 2.5rem;
+      border-radius: 0.5rem;
+      background: #eee;
+      color: var(--black);
+      font-size: 1.5rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+      text-align: center;
     }
   }
 `;
-const NavLink = styled(Link)`
-  color: ${({ color }) => (color ? color : "#fff")};
-  text-decoration: none;
-  display: block;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out;
-  font-weight: bold;
-  &:hover {
-    color: var(--yellow-main);
-  }
-`;
-const SpecialNavLink = styled(Link)`
-  background: var(--yellow-main);
-  color: #fff;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  display: block;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out;
-`;
-export default TopNav;

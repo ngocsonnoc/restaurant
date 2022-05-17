@@ -1,21 +1,24 @@
-import * as actionTypes from "../../actions/actionTypes";
+import * as actionTypes from "../../constants/actionTypes";
 
-const login = ({ facebookUserId, googleUserId, email }, state) => {
+const login = ({ firstName, lastName, avatar, email }, state) => {
   const updatedState = {
     ...state,
-    facebookUserId: facebookUserId,
-    googleUserId: googleUserId,
+    isLogin: true,
+    firstName: firstName,
+    lastName: lastName,
+    avatar: avatar,
     email: email,
   };
-
   return updatedState;
 };
 
 const logout = (state) => {
   const updatedState = {
     ...state,
-    facebookUserId: null,
-    googleUserId: null,
+    isLogin: false,
+    firstName: null,
+    lastName: null,
+    avatar: null,
     email: null,
   };
 
@@ -27,8 +30,9 @@ export const authReducer = (state, action) => {
     case actionTypes.AUTH_LOGIN:
       return login(
         {
-          facebookUserId: action.facebookUserId,
-          googleUserId: action.googleUserId,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          avatar: action.avatar,
           email: action.email,
         },
         state

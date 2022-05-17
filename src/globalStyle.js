@@ -3,11 +3,33 @@ import bg from "./assets/image/bg-login.png";
 
 export const GlobalStyle = createGlobalStyle`
   
-   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    color: #8f9bad;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
 
 :root{
     --yellow-main: #ffa323; 
     --green-main :#308d46;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --orange:#ff7800;
+    --black:#130f40;
+    --light-color:#666;
+    --box-shadow:0 .5rem 1.5rem rgba(0,0,0,.1);
+    --border:.2rem solid rgba(0,0,0,.1);
+    --outline:.1rem solid rgba(0,0,0,.1);
+    --outline-hover:.2rem solid var(--black);
+
 }
    * {
   margin: 0;
@@ -22,7 +44,7 @@ button {
   font-family: 'Montserrat', sans-serif;
 }
 body {
-  font-family: 'Montserrat', sans-serif;
+
   background-color: #f8f8f8;
 }
 input.input-border-bottom{
@@ -31,8 +53,11 @@ input.input-border-bottom{
     border-bottom: 1px solid #000;
     background: transparent;
 }
-h1, h3 {
-    font-family: 'Oswald', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 20px 0;
 }
 .container {
   max-width: 1140px;
@@ -72,6 +97,105 @@ section{
     color: #333;
     font-weight: bold;
 }
+  .btn-confirm {
+    background: #000;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    label{
+      cursor: pointer;
+    }
+  }
+
+  /* modal thay doi avatar */
+  .flex-10{
+    flex-basis:10%;
+  }
+  .flex-15{
+    flex-basis:15%;
+  }
+  .flex-20{
+    flex-basis:20%;
+  }
+  .flex-25{
+    flex-basis:25%;
+  }
+  .flex-30{
+    flex-basis:30%;
+  }
+  .flex-40{
+    flex-basis:40%;
+  }
+  .flex-50{
+    flex-basis:50%;
+  }
+  .flex-60{
+    flex-basis:60%;
+  }
+  .flex-70{
+    flex-basis:70%;
+  }
+  .flex-80{
+    flex-basis:80%;
+  }
+  .view-avatar .user-avatar{
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+  }
+  .view-avatar .user-avatar img {
+        width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+      }
+  .alert {
+    position: relative;
+    padding: 0.3rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+  .tfu-control{
+    padding: 0.3rem 1rem;
+    margin-left: 10px;
+  }
+
+  .user-phone-number {
+    position: relative;
+    display: flex;
+    flex-direction: revert;
+    justify-content: flex-end;
+    margin-left: 10px;
+}
+.user-phone-number .phone_prefix {
+    position: absolute;
+    background: #f1f1f1;
+    top: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    left: 1px;
+    height: 38px;
+    width: 11%;
+    z-index: 0;
+    border: 1px solid #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-info input.tfu-control {
+    height: 38px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    border-radius: 5px;
+}
+.tfu-control.input-prefix {
+    flex-basis: 90%;
+}
+/* ket thuc */
 .login-container{
     background-image: url(${bg});
     background-size: cover;
@@ -110,5 +234,10 @@ section{
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out;
+    }
+    .mapboxgl-marker{
+      img{
+        max-width: 30px;
+      }
     }
 `;

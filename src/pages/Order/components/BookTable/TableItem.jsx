@@ -6,7 +6,7 @@ const TableTypes = {
   MEDIUM: 3,
   BIG: 4,
 };
-const TableItem = ({ table }) => {
+const TableItem = ({ table, onSelect, currTable }) => {
   const [objClass, setObjClass] = useState("");
   const objTableClass = (table) => {
     let result = "";
@@ -32,10 +32,15 @@ const TableItem = ({ table }) => {
       setObjClass("");
     };
   }, [table]);
-  console.log(objClass);
   return (
     <TableWrapper>
-      <button className={objClass} disabled={table.status === 0}>
+      <button
+        className={`${objClass} ${
+          currTable._id == table._id ? "selected" : ""
+        }`}
+        disabled={table.status === 0}
+        onClick={() => onSelect(table)}
+      >
         {table?.name || ""}
       </button>
     </TableWrapper>
